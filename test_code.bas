@@ -158,3 +158,30 @@ Sub Extra_Function()
   'test function that does nothing
 
 End Sub
+
+
+    # get restaurant type from df
+    restr_type = row['ethnicity']
+
+    # add keyword to params dict
+    params['keyword'] = restr_type
+
+    # assemble url and make API request
+    print(f"Retrieving Results for Index {index}: {restr_type}.")
+    response = requests.get(base_url, params=params).json()
+    
+    # extract results
+    results = response['results']
+    
+    try:
+        print(f"Closest {restr_type} restaurant is {results[0]['name']}.")
+        
+        types_df.loc[index, 'name'] = results[0]['name']
+        types_df.loc[index, 'address'] = results[0]['vicinity']
+        types_df.loc[index, 'price_level'] = results[0]['price_level']
+        types_df.loc[index, 'rating'] = results[0]['rating']
+        
+    except (KeyError, IndexError):
+        print("Missing field/result... skipping.")
+        
+    print("------------")
