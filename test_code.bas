@@ -158,3 +158,48 @@ Sub Extra_Function()
   'test function that does nothing
 
 End Sub
+
+
+# Dependencies and Setup
+import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
+import plotly.express as px
+
+import gmaps
+import requests
+import json
+
+
+from scipy.stats import linregress
+
+# Import API key
+from api_keys import weather_api_key
+from api_keys import g_key
+# Import World Happiness Report Data 2021
+raw_happiness_df = pd.read_csv("Data/world-happiness-report-2021.csv")
+
+# Rename columns
+raw_happiness_df = raw_happiness_df.rename(columns={'Country name': 'Country', 
+                                                'Regional indicator': 'Region',
+                                                'Ladder score': 'Happiness Score',
+                                                'Social support': 'Social Support',                                                    
+                                                'Logged GDP per capita': 'GDP per Capita',
+                                                'Healthy life expectancy': 'Life Expectancy',
+                                                'Freedom to make life choices': 'Freedom',
+                                                'Perceptions of corruption': 'Corruption'})
+
+# Drop columns not needed
+happiness_df = raw_happiness_df.drop(columns=['Standard error of ladder score', 
+                                              'upperwhisker', 
+                                              'lowerwhisker',
+                                              'Ladder score in Dystopia',
+                                              'Explained by: Log GDP per capita',
+                                              'Explained by: Social support',
+                                              'Explained by: Healthy life expectancy',
+                                              'Explained by: Freedom to make life choices',
+                                              'Explained by: Generosity',
+                                              'Explained by: Perceptions of corruption',
+                                              'Dystopia + residual'])
+# Show preview of DataFrame
+happiness_df
